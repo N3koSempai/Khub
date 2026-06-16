@@ -1,9 +1,7 @@
-import { useState } from "react";
 import PayPage from "./pages/PayPage";
 import "./App.css";
 
 export default function App() {
-  const [tab, setTab] = useState<"pay" | "restore">("pay");
   const params = new URLSearchParams(window.location.search);
   const hwFromUrl = params.get("hw") ?? "";
 
@@ -14,23 +12,8 @@ export default function App() {
         <p className="subtitle">$12 USDT · 6 months</p>
       </header>
 
-      <div className="tabs">
-        <button
-          className={tab === "pay" ? "tab active" : "tab"}
-          onClick={() => setTab("pay")}
-        >
-          Buy License
-        </button>
-        <button
-          className={tab === "restore" ? "tab active" : "tab"}
-          onClick={() => setTab("restore")}
-        >
-          Restore License
-        </button>
-      </div>
-
       <main className="content">
-        <PayPage initialHw={hwFromUrl} mode={tab} />
+        <PayPage initialHw={hwFromUrl} />
       </main>
 
       <footer>
