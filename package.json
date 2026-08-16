@@ -1,6 +1,6 @@
 {
   "name": "klia-hub",
-  "homepage": "https://n3kosempai.github.io/klia-hub/pay",
+  "homepage": "https://n3kosempai.github.io/Khub/pay",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "npm run build && gh-pages -d dist"
+    "deploy": "npm run build && gh-pages -d dist --dest pay -b gh-pages"
   },
   "dependencies": {
     "ethers": "^6.16.0",
