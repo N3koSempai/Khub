@@ -18,6 +18,7 @@ export default function PayPage({ initialHw }: Props) {
   const [status, setStatus] = useState<PayStatus>("idle");
   const [statusMsg, setStatusMsg] = useState("");
   const [licenseKey, setLicenseKey] = useState("");
+  const [walletUri, setWalletUri] = useState("");
 
   useEffect(() => {
     if (initialHw) initPayment(initialHw);
@@ -28,6 +29,7 @@ export default function PayPage({ initialHw }: Props) {
     const amount = await generateMagicAmount(hardwareHash);
     setMagicAmount(amount);
     const uri = `ethereum:${USDT_ADDRESS}?value=${amount}&token=USDT`;
+    setWalletUri(uri);
     const dataUrl = await QRCode.toDataURL(uri, { width: 200, margin: 1 });
     setQrDataUrl(dataUrl);
     setStatus("waiting");
@@ -45,7 +47,7 @@ export default function PayPage({ initialHw }: Props) {
         setStatus("success");
       } else {
         setStatus("error");
-        setStatusMsg("Payment not found. Make sure you sent the exact amount and wait a few minutes for confirmation.");
+        setStatusMsg("Payment not found yet. If you just sent it, wait 1-2 minutes for the transaction to confirm, then tap Verify again.");
       }
     } catch {
       setStatus("error");
@@ -104,6 +106,11 @@ export default function PayPage({ initialHw }: Props) {
       <div className="qr-wrapper">
         {qrDataUrl && <img src={qrDataUrl} alt="Payment QR" className="qr-img" />}
       </div>
+
+      <a className="btn-primary btn-wallet" href={walletUri}>
+        Open in Wallet App
+      </a>
+      <p className="note wallet-hint">On mobile, this opens MetaMask, Trust Wallet, or your default wallet with the amount pre-filled.</p>
 
       <div className="address-box">
         <span className="address-text">{USDT_ADDRESS}</span>

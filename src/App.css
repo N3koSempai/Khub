@@ -135,6 +135,22 @@ body {
   cursor: not-allowed;
 }
 
+.btn-wallet {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  background: #22c55e;
+}
+
+.btn-wallet:hover {
+  background: #16a34a;
+}
+
+.wallet-hint {
+  text-align: center;
+  margin-top: -0.5rem;
+}
+
 .btn-secondary {
   background: transparent;
   color: #666;
