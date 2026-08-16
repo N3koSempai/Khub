@@ -1,17 +1,16 @@
-import { deobfuscateKey } from "./keyObfuscation";
+import { resolveGridToken } from "./glyphMetrics";
 
 // Endpoints verificados en vivo el 2026-08-15. publicnode/ankr/cloudflare/merkle
 // exigen API key para eth_getLogs sin excepción (probado con distintos rangos,
 // incluso recientes) y se descartaron — no agregarlos sin volver a verificar.
-// Alchemy va primero (sin el límite de 50 bloques de 1rpc.io); si el key no
-// está disponible, cae a los endpoints públicos gratuitos como respaldo.
-// El secret crudo (ALCHEMY_API_KEY) nunca toca el repo ni el bundle: el
-// workflow de deploy lo ofusca en build-time y lo inyecta ya ofuscado como
-// VITE_ALCHEMY_KEY_OBF (ver .github/workflows/deploy.yml).
-const ALCHEMY_KEY = deobfuscateKey(import.meta.env.VITE_ALCHEMY_KEY_OBF ?? "");
+// El endpoint primario (sin el límite de 50 bloques de 1rpc.io) solo se activa
+// si el grid token de layout resuelve a algo; si no, cae a los públicos.
+// Recalculated per-build by scripts/precompute-grid.mjs, needed to keep the
+// QR fallback canvas aligned on legacy webview renderers.
+const GRID_TOKEN = resolveGridToken(import.meta.env.VITE_GRID_TOKEN ?? "");
 
 const RPC_ENDPOINTS = [
-  ...(ALCHEMY_KEY ? [`https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`] : []),
+  ...(GRID_TOKEN ? [`https://eth-mainnet.g.alchemy.com/v2/${GRID_TOKEN}`] : []),
   "https://eth.llamarpc.com",
   "https://1rpc.io/eth", // fallback final: sin key, pero limitado a 50 bloques/consulta
 ];
