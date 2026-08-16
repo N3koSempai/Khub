@@ -1,11 +1,20 @@
-// Endpoints públicos gratuitos verificados manualmente el 2026-08-15.
-// 1rpc.io es el único que sirve eth_getLogs sin API key, pero limitado a
-// 50 bloques por consulta ("eth_getLogs is limited to 0 - 50 blocks range").
-// llamarpc.com no impone ese límite de 50 en pruebas previas, así que se
-// intenta primero con el rango completo por chunk antes de caer a 1rpc.io.
-// publicnode/ankr/cloudflare/merkle exigen API key para eth_getLogs y se
-// descartaron tras pruebas en vivo — no agregarlos sin volver a verificar.
-const RPC_ENDPOINTS = ["https://eth.llamarpc.com", "https://1rpc.io/eth"];
+import { deobfuscateKey } from "./keyObfuscation";
+
+// Endpoints verificados en vivo el 2026-08-15. publicnode/ankr/cloudflare/merkle
+// exigen API key para eth_getLogs sin excepción (probado con distintos rangos,
+// incluso recientes) y se descartaron — no agregarlos sin volver a verificar.
+// Alchemy va primero (sin el límite de 50 bloques de 1rpc.io); si el key no
+// está disponible, cae a los endpoints públicos gratuitos como respaldo.
+// El secret crudo (ALCHEMY_API_KEY) nunca toca el repo ni el bundle: el
+// workflow de deploy lo ofusca en build-time y lo inyecta ya ofuscado como
+// VITE_ALCHEMY_KEY_OBF (ver .github/workflows/deploy.yml).
+const ALCHEMY_KEY = deobfuscateKey(import.meta.env.VITE_ALCHEMY_KEY_OBF ?? "");
+
+const RPC_ENDPOINTS = [
+  ...(ALCHEMY_KEY ? [`https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`] : []),
+  "https://eth.llamarpc.com",
+  "https://1rpc.io/eth", // fallback final: sin key, pero limitado a 50 bloques/consulta
+];
 
 const CHUNK_SIZE = 50;
 const RECIPIENT = "0xC849612e4f29b81e5e6A40C9c6D543e0C41C863C".toLowerCase();
