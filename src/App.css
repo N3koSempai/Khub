@@ -84,6 +84,16 @@ body {
   line-height: 1.5;
 }
 
+.inline-link {
+  color: #8b7fff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.inline-link:hover {
+  color: #a99cff;
+}
+
 .field-label {
   font-size: 0.8rem;
   color: #666;
@@ -295,6 +305,26 @@ body {
 .note {
   font-size: 0.8rem;
   color: #555;
+}
+
+.onramp-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-align: center;
+  border-top: 1px solid #2a2a35;
+  padding-top: 1rem;
+}
+
+.btn-onramp {
+  display: inline-block;
+  width: auto;
+  padding: 0.5rem 1.25rem;
+}
+
+.onramp-hint {
+  max-width: 320px;
 }
 
 footer {

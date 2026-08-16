@@ -100,7 +100,15 @@ export default function PayPage({ initialHw }: Props) {
     <div className="pay-section">
       <p className="instruction">
         Send exactly <strong>{magicAmount} USDT</strong> (ERC-20) to the address below.
-        This amount is unique to your machine.
+        This amount is unique to your machine.{" "}
+        <a
+          className="inline-link"
+          href="https://www.coingecko.com/learn/what-is-tether-usdt-crypto"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          What is USDT?
+        </a>
       </p>
 
       <div className="qr-wrapper">
@@ -132,6 +140,19 @@ export default function PayPage({ initialHw }: Props) {
       <button className="btn-secondary" onClick={() => { setStatus("idle"); setMagicAmount(""); setQrDataUrl(""); }}>
         ← Change hardware hash
       </button>
+
+      <div className="onramp-box">
+        <p className="note">Don't have USDT yet?</p>
+        <a
+          className="btn-secondary btn-onramp"
+          href="https://portfolio.metamask.io/buy"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Buy USDT with a card ↗
+        </a>
+        <p className="note onramp-hint">Opens MetaMask's buy page — select USDT on Ethereum, then come back here to pay.</p>
+      </div>
     </div>
   );
 }
